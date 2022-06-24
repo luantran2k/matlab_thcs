@@ -1,4 +1,4 @@
-function res = findByCol(app, col, value, type)
+function res = filterByCol(app, col, value, type)
     res = [];
     cols = app.UITable.ColumnName';
     data = app.UITable.Data;
@@ -11,9 +11,16 @@ function res = findByCol(app, col, value, type)
     switch type
         case '='
             for i = 1:height(data)
-                if contains(string(data{i, numCol}), string(value))
-                    row = data(i, [1:end]);
-                    res = [res; row];
+                if isa(data{i, numCol}, 'double')
+                    if data{i, numCol} == str2double(value)
+                        row = data(i, [1:end]);
+                        res = [res; row];
+                    end 
+                else
+                    if contains(string(data{i, numCol}), string(value))
+                        row = data(i, [1:end]);
+                        res = [res; row];
+                    end
                 end
             end
         case '>'
